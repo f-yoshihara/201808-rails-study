@@ -1,0 +1,10 @@
+<%= form_tag(
+  { controller: :keyword, action: :search }, #第一引数 ここはリンク先のurlを指定。
+  # この場合は action = "/keyword/search" が生成される。routest.rbにアクションに対するルーティングが必要。
+  # デフォルトはpost.
+  id: :fm, class: :search #第二・三引数 属性を指定。
+  ) do %>
+  <label for="keywd">検索キーワード：</label>
+  <%= text_field_tag :keywd, '', size: 30 %>
+  <%= submit_tag '検索' %>
+<% end %>

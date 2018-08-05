@@ -1,0 +1,8 @@
+<%= form_for(@book) do |f| %>
+<%# :publishは順にname, value, 表示。 %>
+<%# テンプレート変数@booksにはselectedとなるオブジェクトが入る。またオプションの元になる。 %>
+<%# @bookから.collection_selectでdbにアクセスしてる。 %>
+  <%= f.collection_select :publish, @books, :publish, :publish %>
+<% end %>
+
+<%# form_forであればモデルの持っているメソッドを使ってdbにアクセスできる。 %>
