@@ -1,5 +1,6 @@
+<%# 見ての通り第一引数にテキストを渡し、第二引数にリンクを渡す %>
 <%= link_to 'サポートサイト', 'http://www.wings.msn.to/' %>
-
+<%# この場合はhelloコントローラのindexメソッドにアクセス %>
 <%= link_to 'トップ', { controller: :hello, action: :index },
   id: :link, class: :menu %>
 
@@ -7,6 +8,7 @@
   { method: :delete, data: { confirm: '削除しても良いですか？'} } %>
 
 <% @book = Book.find(1) %>
+<%# 正規表現はわかるけど、book_pathがいまいちわからない %>
 <%= link_to book_path(@book) do
   image_tag "http://www.wings.msn.to/books/#{@book.isbn}/#{@book.isbn}.jpg"
 end %>

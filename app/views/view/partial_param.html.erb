@@ -1,0 +1,5 @@
+<div id="info">
+  <%= render 'books/book', book: @book, type: :details %>
+  <%# ↑でrenderで第一引数で行き先を示しつつ第二引数以下でテンプレート変数を部分テンプレートに渡すためのシンボルに入れている %>
+  <%# これはローカル変数ではない？ %>
+</div>

@@ -1,0 +1,28 @@
+<%
+=begin
+<p>
+<img src="http://www.wings.msn.to/books/<%= @book.isbn%>/<%= @book.isbn%>_logo.jpg" width="80" height="30" /><br />
+<%# @bookはルートで定義された変数だけどここまで持ってこれる %>
+<%# しかしこれの親のviewで宣言された変数はローカルになり持ってこれないので注意 %>
+<%= @book.title %><br />
+<%= @book.publish %>/発行<br />
+定価 <%= @book.price %>円（＋税）<br />
+ISBN <%= @book.isbn %><br />
+発刊日： <%= @book.published %>
+</p>
+=end
+%>
+
+<p>
+<% type = :details if type.nil? %>
+<%# ↑はrubyぽい書き方。 %>
+<%# 後置ifはifの評価が戻り値になる %>
+<%# もしもtype.nilがtrueならtypeに:detailsが代入されるということ %>
+<% if type == :details %>
+<img src="http://www.wings.msn.to/books/<%= book.isbn%>/<%= book.isbn%>_logo.jpg" width="80" height="30" /><br />
+<%= book.title %><br />
+<%= book.publish %>/発行<br />
+定価 <%= book.price %>円（＋税）<br />
+ISBN <%= book.isbn %><br />
+発刊日： <%= book.published %>
+</p>

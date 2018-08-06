@@ -26,4 +26,8 @@ Rails.application.routes.draw do
   get 'view/simple_format'
   get 'view/truncate'
   get 'view/link'
+  get 'view/nest'
+  get 'view/partial_basic'
+  get 'view/partial_col'
+  get 'view/partial_param'
 end
