@@ -3,7 +3,9 @@
     <th>ISBNコード</th><th>書名</th><th>価格</th>
     <th>出版社</th><th>刊行日</th><th>ダウンロード</th>
   </tr>
+  <%# @bookにはobjectの配列が入っているのでeachでそれぞれの要素を取り出している %>
 <% @books.each do |book| %>
+<%# @book.each do |book| %>
   <tr>
     <td><%= book.isbn %></td>
     <td><%= book.title %></td>

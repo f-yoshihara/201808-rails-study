@@ -1,12 +1,71 @@
-def find
-  # @でテンプレート変数を宣言。これはrubyのインスタンス変数と同じ。
-  # Bookはmodels/book.rbで定義されたクラス。
-  # BookはApplicationRecordを継承しているのでfindメソッドを持っている。
-  # findは引数にデータの主キーをとる。
-  # ここでは配列として複数の主キーをfindしている
-  @book = Book.find([2, 5, 10])
-  # renderは引数にviews以下からテンプレートまでのパスをとることでテンプレートを呼び出す。
-  # 呼び出した先で@で宣言したテンプレート変数を参照できる。
-  # ここでのrenderはアクションメソッドのひとつ。
-  render 'hello/list'
+class RecordController < ApplicationController
+  # before_action :set_book, only: [:show, :edit, :update, :destroy]
+  def find
+    # @でテンプレート変数を宣言。これはrubyのインスタンス変数と同じ。
+    # Bookはmodels/book.rbで定義されたクラス。
+    # BookはApplicationRecordを継承しているのでfindメソッドを持っている。
+    # findは引数にデータの主キーをとる。
+    # ここでは配列として複数の主キーをfindしている
+    # そしてテンプレート変数@bookにオブジェクトの配列を代入している。
+    @book = Book.find([2, 5, 11])
+    # renderは引数にviews以下からテンプレートまでのパスをとることでテンプレートを呼び出す。
+    # 呼び出した先で@で宣言したテンプレート変数を参照できる。
+    # ここでのrenderはアクションメソッドのひとつ。
+    render 'hello/list'
+  end
+  def where
+    # これがメソッドチェーン。
+    # whereとorderを繋げて一つのクエリにしている。
+    # それぞれのメソッドの引数として条件はハッシュで表現している。
+    # Bookクラスがbooksテーブル全体を意味する。
+    @books = Book.where(publish: '技術評論社').order(published: :desc)
+    # SELECT "books".* FROM "books" WHERE "books"."publish" = ? ORDER BY "books"."published" DESC 
+    # ↑が生成されたクエリ。
+    render 'hello/list'
+  end
+  def ph1
+    # 第一引数で条件指定。
+    # 第二引数以降でレコードのインスタンスを持ってきている。
+    # 「?」の部分がプレイスホルダー
+    # 「?」の順番と引数の順番は合わせる。順番に代入されていく。
+    # 
+    # @books = Book.where('publish = ? AND price >= ?',
+      # ↑名前なしパラメータ ↓名前つきパラメータ
+    @books = Book.where('publish = :publish AND price >= :price',
+      # paramsはメソッドでここからhttpを通して受けたクライアントからのリクエスト情報を取得することができる。
+      # リクエスト情報とはpostされた値やurl末尾の情報など
+      # 今回はpostで受けているのでpostの値。
+      # params[:publish], params[:price])
+        # ↑名前なしパラメータ ↓名前つきパラメータ
+      publish: params[:publish], price: params[:price])
+    render 'hello/list'
+  end
+
+  def select
+    # SELECT "books"."title", "books"."price" FROM "books" WHERE (price >= 2000)
+    # ↑が生成される。@bookはtitleとprice以外のプロパティを持たない。
+    # ちなみに"books"."title"の部分がbooksテーブルのpriceカラムという意味。
+    # "books".*は全部のカラムという意味。
+    @books = Book.where('price >= 2000').select(:title, :price)
+    render 'hello/list'
+  end
+
+  def offset
+    # offset(4)で4番目までを相殺し、limit(3)で3番目までを取り出す。
+    @books = Book.order(published: :desc).limit(3).offset(4)
+    render 'hello/list'
+  end
+
+  def page
+    page_size = 3 #ページあたりの表示件数
+    # ↓条件演算子でparams[:id]がnilの場合はpage_numに0を代入
+    # それ以外はparams[:id].to_i - 1
+    page_num = params[:id] == nil ? 0 : params[:id].to_i - 1 #
+    # ↑ルート get 'record/page(/:id)' => 'record#page' から
+    # ↓offsetは相殺。limitは表示件数。
+    @books = Book.order(published: :desc).limit(page_size).offset(page_size * page_num)
+    render 'hello/list'
+  end
+
+
 end

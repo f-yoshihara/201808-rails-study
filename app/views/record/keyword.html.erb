@@ -1,0 +1,18 @@
+<%# 検索で対象とするインスタンスがないためform_tag %>
+<%# ↓ではpostでのリンク先のurlが生成されるため必ずルーティングが必要になる。忘れないように！！ %>
+<%# postでのリクエスト情報送信はurlには反映されず、裏を通ってactionのルート先へいく %>
+<%# form_tagはモデルに依存しない %>
+<%= form_tag action: :ph1 do  %>
+  <div class="field">
+    <%= label_tag :publish, '出版社：' %>
+    <%# ↓でidとnameがpublishになる %>
+    <%# ルート先のparamsはそれを目印にしてvalueを受け取る %>
+    <%= text_field_tag :publish %>
+  </div>
+  
+  <div class="field">
+    <%= label_tag :price, '最低価格：' %>
+    <%= text_field_tag :price %>
+  </div>
+  <%= submit_tag '検索' %>
+<% end %>
