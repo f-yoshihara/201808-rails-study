@@ -69,6 +69,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:username, :password_digest, :email, :dm, :roles, :reviews_count)
+      # acceptance検証用:agreement追記
+      params.require(:user).permit(:username, :password_digest, :email, :dm, :roles, :reviews_count, :agreement)
     end
 end

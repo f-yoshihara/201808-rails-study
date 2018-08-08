@@ -25,8 +25,9 @@ class BooksController < ApplicationController
   # POST /books.json
   def create
     @book = Book.new(book_params)
-
     respond_to do |format|
+      # @bookがsaveに先立ってvalidationをかける。
+      # saveはtrue/falseを戻り値として返すのでDBへの保存と同時にvalidationの結果を含んだ条件分岐ができる。
       if @book.save
         format.html { redirect_to @book, notice: 'Book was successfully created.' }
         format.json { render :show, status: :created, location: @book }

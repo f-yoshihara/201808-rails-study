@@ -67,5 +67,56 @@ class RecordController < ApplicationController
     render 'hello/list'
   end
 
+  def transact
+      # transactionメソッドはモデルクラスが持っている。インスタンスからでも呼び出せる。
+      Book.transaction do
+        b1 = Book.new({isbn: '0000',
+          title: 'Ruby',
+          price: 3000,
+          publish: '技術評論社',
+          published: '2018-08-08'})
+        # この時点ではsave!は実行されない。
+        # saveは戻り値としてtrue/falseを返すが、save!はエラーの時に例外を返す。
+        # rubyではほぼ全てのメソッドが戻り値を返す。全ての式が値を値をもつという基本思想があるため。
+        b1.save!
+        # raiseは意図的に例外を発生させるためのメソッド。
+        # 引数の文字列がエラーメッセージとして登録される。
+        # 後から出てくるmessageメソッドで取り出される。
+        raise '例外発生：処理はキャンセルされました。'
+        b2 = Book.new({isbn: '0000',
+          title: 'rails',
+          price: 5000,
+          publish: '技術評論社',
+          published: '2018-08-10'})
+        b2.save!
+      end
+      # ここまでがトランザクションブロック。
+      render plain: 'トランザクション成功'
+    # 例外が発生した時はrescueを定義しておくことで処理を続行することができる。これが例外処理。
+    # 例外が発生した時には処理がrescueまでジャンプしてそれ以降が実行される。
+    # 例外自体もオブジェクトとして扱われている。そこから情報を引き出すことができる。それを変数eに格納している。
+    # この=>はrescueから例外を格納するための特別な書き方。
+    rescue => e
+      # messageメソッドは例外オブジェクトが持っているメソッドで、エラーメッセージを返す。
+      # この場合はraiseメソッドで'例外発生：処理はキャンセルされました。'が格納されている。
+      # render plain: e.message
+      render plain: e.backtrace
+  end
 
+  def keywd
+    # これは非DB系モデル
+    @search = SearchKeyword.new
+  end
+
+  def keywd_process
+    # validがかかったかどうかの結果も含めて@searchが生成される。
+    @search = SearchKeyword.new(params.require(:search_keyword).permit(:keyword))
+
+    # ここで条件分岐
+    if @search.valid?
+      render plain: @search.keyword
+    else
+      render plain: @search.errors.full_messages[0]
+    end
+  end
 end
