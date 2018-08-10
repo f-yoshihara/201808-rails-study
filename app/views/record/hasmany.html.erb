@@ -1,0 +1,8 @@
+<h2>「<%= @book.title %>」のレビュー</h2>
+<ul>
+<%# has_manyメソッドでreviewモデルを定義したことでBookからのreviewモデルへのアクセスが可能になった %>
+<% @book.reviews.each do |review| %>
+<%# bookは多のreviewを持っているのでメソッドを複数形にする。 %>
+  <li><%= review.body %> (<%= review.updated_at %>) </li>
+<% end %>
+</ul>

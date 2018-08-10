@@ -54,4 +54,8 @@ Rails.application.routes.draw do
   get 'record/transact'
   get 'record/keywd'
   post 'record/keywd_process'
+  get 'record/belongs'
+  get 'record/hasmany'
+  get 'record/has_and_belongs'
+  get 'record/has_many_through'
 end

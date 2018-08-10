@@ -1,0 +1,5 @@
+<%# recordコントローラのbelongsメソッド内でReviewメソッドから＠reviewインスタンスを生成している %>
+<%# belongs_to :bookを定義することによって@reviewからbook.titleにアクセスできるようになった。 %>
+<%# belongs_toの引数がそのままアクセサメソッドとして使われる。 %>
+<h2>「<%= @review.book.title %>」のレビュー</h2>
+<p><%= @review.body %>(<%= @review.updated_at %>)</p>
