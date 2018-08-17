@@ -21,4 +21,16 @@ class Book < ApplicationRecord
   has_and_belongs_to_many :authors
   # 子モデルから見た参照元をmemoableとして定義。
   has_many :memos, as: :memoable
+
+  # after_destroyメソッドで:history_book をコールバックメソッドとして定義している。
+  after_destroy :history_book
+
+  private
+  # ここから下はprivateメソッド
+  # つまり、外部からは参照できない。after_destroyの引数として呼び出されるのみ。
+    def history_book
+      # これでコンソールに削除したデータの情報をだす。
+      logger.info('deleted: ' + self.inspect)
+    end
+
 end
